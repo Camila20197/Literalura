@@ -1,24 +1,53 @@
 package com.AluraDesafios.challenge_literalura.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.AluraDesafios.challenge_literalura.dto.DataBook;
+import jakarta.persistence.*;
 
-import java.util.List;
+/**
+ * Esta clase representa la entidad Libro en la base de datos.
 
+ * La tabla asociada a esta clase se llama "books".
+
+ * Un libro se identifica por su ID (generado automáticamente), título, autor, idioma y número de descargas.
+
+ * Un libro pertenece a un único autor.
+ */
+@Entity
+@Table(name = "books")
 public class Book {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String titulo;
 
-    private List<Author> autores;
 
-    private List<String> temas;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
 
-    public int getId() {
+    @Enumerated(EnumType.STRING)
+    private Language idiomas;
+
+    private Integer descargas;
+
+
+    public Book(){}
+
+
+    public Book(DataBook datosBook, Author autor) {
+        this.titulo = datosBook.titulo();
+        this.author = autor;
+        this.idiomas = Language.fromString(datosBook.idiomas().get(0));
+        this.descargas = datosBook.descargas();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -30,29 +59,37 @@ public class Book {
         this.titulo = titulo;
     }
 
-    public List<Author> getAutores() {
-        return autores;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setAutores(List<Author> autores) {
-        this.autores = autores;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
-    public List<String> getTemas() {
-        return temas;
+    public Language getIdiomas() {
+        return idiomas;
     }
 
-    public void setTemas(List<String> temas) {
-        this.temas = temas;
+    public void setIdiomas(Language idiomas) {
+        this.idiomas = idiomas;
+    }
+
+    public Integer getDescargas() {
+        return descargas;
+    }
+
+    public void setDescargas(Integer descargas) {
+        this.descargas = descargas;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "author=" + author.getNombre() +
+                ", idiomas=" + idiomas +
+                ", descargas=" + descargas +
                 ", titulo='" + titulo + '\'' +
-                ", autores=" + autores +
-                ", temas=" + temas +
                 '}';
     }
 }

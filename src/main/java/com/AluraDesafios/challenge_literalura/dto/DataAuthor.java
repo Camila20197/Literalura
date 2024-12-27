@@ -1,10 +1,16 @@
-package com.AluraDesafios.challenge_literalura.model;
+package com.AluraDesafios.challenge_literalura.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+/**
+ * Esta clase representa los datos de un autor.
+ *
+ * @param nombre El nombre del autor.
+ * @param anioNacimiento El año de nacimiento del autor.
+ * @param anioMuerte El año de muerte del autor.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DatosAuthor(
+public record DataAuthor(
 
         @JsonAlias("name") String nombre,
 
@@ -12,5 +18,6 @@ public record DatosAuthor(
 
         @JsonAlias("death_year") int anioMuerte
 ){
+
 }
 
